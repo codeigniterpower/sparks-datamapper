@@ -8,13 +8,18 @@
 
 $config['prefix'] = '';
 $config['join_prefix'] = '';
-$config['error_prefix'] = '<p>';
-$config['error_suffix'] = '</p>';
+$config['error_prefix'] = '';
+$config['error_suffix'] = "\n";
 $config['created_field'] = 'created';
 $config['updated_field'] = 'updated';
-$config['local_time'] = FALSE;
+/* Setting 'local_time' to TRUE should let us use BST correctly */
+$config['local_time'] = TRUE;
 $config['unix_timestamp'] = FALSE;
-$config['timestamp_format'] = '';
+/*
+	NOTE: if 'timestamp_format' is left as an empty string (as per the DataMapper config file) then created timestamps aren't saved!
+	Either set it to 'Y-m-d H:i:s O', or omit this line. This might always be required under IIS, though:
+*/
+// $config['timestamp_format'] = '';
 $config['lang_file_format'] = 'model_${model}';
 $config['field_label_lang_format'] = '${model}_${field}';
 $config['auto_transaction'] = FALSE;
@@ -27,7 +32,9 @@ $config['all_array_uses_ids'] = FALSE;
 $config['db_params'] = '';
 
 // Uncomment to enable the production cache
-// $config['production_cache'] = APPPATH.'cache';
+if (ENVIRONMENT == 'production') {
+	$config['production_cache'] = 'cache/datamapper';	
+}
 
 $config['extensions_path'] = '../sparks/Datamapper-ORM/1.8.3/extensions';
 $config['extensions'] = array();
